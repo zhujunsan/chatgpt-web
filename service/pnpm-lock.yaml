@@ -1,12 +1,12 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@zhujunsan/chatgpt':
+    specifier: ^5.2.8
+    version: 5.2.8
   axios:
     specifier: ^1.3.4
     version: 1.3.4
-  chatgpt:
-    specifier: ^5.2.4
-    version: 5.2.4
   dayjs:
     specifier: ^1.11.7
     version: 1.11.7
@@ -687,6 +687,22 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
+  /@zhujunsan/chatgpt@5.2.8:
+    resolution: {integrity: sha512-upXPZZs0d0gpg2yZUk+flVkqEa7WWFGbGWl610EYR15MmobmLbygIa36I52djk6WnuYZzdGBOVBFMKOlf07tvQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@dqbd/tiktoken': 1.0.7
+      cac: 6.7.14
+      conf: 11.0.1
+      eventsource-parser: 1.0.0
+      keyv: 4.5.2
+      p-timeout: 6.1.1
+      quick-lru: 6.1.1
+      read-pkg-up: 9.1.0
+      uuid: 9.0.0
+    dev: false
+
   /accepts@1.3.8:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
     engines: {node: '>= 0.6'}
@@ -980,22 +996,6 @@ packages:
   /character-reference-invalid@1.1.4:
     resolution: {integrity: sha512-mKKUkUbhPpQlCOfIuZkvSEgktjPFIsZKRRbC6KWVEMvlzblj3i3asQv5ODsrwt0N3pHAEvjP8KTQPHkp0+6jOg==}
     dev: true
-
-  /chatgpt@5.2.4:
-    resolution: {integrity: sha512-U53cUJ/1sEUD1+lcdW52QqbVQZOIMy3hxzYdEIhmmgZJQW/zI8C5O9ohCxXbFsbk6OtXHEBxY/0xw4Qa6twG2Q==}
-    engines: {node: '>=14'}
-    hasBin: true
-    dependencies:
-      '@dqbd/tiktoken': 1.0.7
-      cac: 6.7.14
-      conf: 11.0.1
-      eventsource-parser: 1.0.0
-      keyv: 4.5.2
-      p-timeout: 6.1.1
-      quick-lru: 6.1.1
-      read-pkg-up: 9.1.0
-      uuid: 9.0.0
-    dev: false
 
   /chokidar@3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
