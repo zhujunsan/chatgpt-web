@@ -25,6 +25,7 @@
   "dependencies": {
     "@traptitech/markdown-it-katex": "^3.6.0",
     "@vueuse/core": "^9.13.0",
+    "chart.js": "^3.1.0",
     "highlight.js": "^11.7.0",
     "html2canvas": "^1.4.1",
     "jwt-decode": "^3.1.2",
@@ -33,6 +34,7 @@
     "naive-ui": "^2.34.3",
     "pinia": "^2.0.33",
     "vue": "^3.2.47",
+    "vue-chart-3": "^3.1.8",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.6"
   },
