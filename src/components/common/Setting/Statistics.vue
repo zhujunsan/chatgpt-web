@@ -61,6 +61,7 @@ async function fetchStatistics() {
       chartData.datasets[0].data = data.chartData.map((item: any) => item.promptTokens)
       chartData.datasets[1].data = data.chartData.map((item: any) => item.completionTokens)
 
+      // todo: don't know why data change won't trigger chart re-render, dirty hack
       showChart.value = false
       nextTick(() => {
         showChart.value = true
@@ -129,7 +130,7 @@ onMounted(() => {
         </div>
 
         <Bar
-          v-if="chartData.labels.length && showChart"
+          v-if="showChart && chartData.labels?.length"
           ref="statisticsChart"
           style="aspect-ratio: 3/2;"
           :options="chartOptions"
