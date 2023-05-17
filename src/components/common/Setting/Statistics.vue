@@ -1,15 +1,16 @@
 <script setup lang='ts'>
-import { onMounted, ref } from 'vue'
-import {NCol, NDatePicker, NIcon, NNumberAnimation, NRow, NSpin, NStatistic} from 'naive-ui'
-import { BarChart } from 'vue-chart-3'
-import { Chart, registerables } from 'chart.js'
+import { nextTick, onMounted, reactive, ref } from 'vue'
+import { NCol, NDatePicker, NIcon, NNumberAnimation, NRow, NSpin, NStatistic } from 'naive-ui'
+import type { ChartData, ChartOptions } from 'chart.js'
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js'
+import { Bar } from 'vue-chartjs'
 import { t } from '@/locales'
 import { fetchUserStatistics } from '@/api'
-import {SvgIcon} from "@/components/common";
+import { SvgIcon } from '@/components/common'
 
-Chart.register(...registerables)
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-const chartData = ref({
+const chartData: ChartData<'bar'> = reactive({
   labels: [],
   datasets: [
     {
@@ -29,33 +30,22 @@ const chartData = ref({
   ],
 })
 
-const chartConfig = ref({
-  type: 'bar',
-  data: chartData,
-  options: {
-    responsive: true,
-    scales: {
-      x: {
-        stacked: true,
-      },
-      y: {
-        stacked: true,
-      },
-    },
-  },
-})
+const chartOptions: ChartOptions<'bar'> = {
+  responsive: true,
+}
 
 const summary = ref({
   promptTokens: 0,
   completionTokens: 0,
   totalTokens: 0,
 })
-const statisticsChart = ref()
 const loading = ref(false)
 const range = ref<[number, number]>([
   new Date().getTime() - 30 * 86400 * 1000,
   new Date().getTime(),
 ])
+
+const showChart = ref(true)
 
 async function fetchStatistics() {
   try {
@@ -67,10 +57,14 @@ async function fetchStatistics() {
       summary.value.completionTokens = data.completionTokens
       summary.value.totalTokens = data.totalTokens
 
-      chartData.value.labels = data.chartData.map((item: any) => item._id)
-      chartData.value.datasets[0].data = data.chartData.map((item: any) => item.promptTokens)
-      chartData.value.datasets[1].data = data.chartData.map((item: any) => item.completionTokens)
-      statisticsChart.value.update()
+      chartData.labels = data.chartData.map((item: any) => item._id)
+      chartData.datasets[0].data = data.chartData.map((item: any) => item.promptTokens)
+      chartData.datasets[1].data = data.chartData.map((item: any) => item.completionTokens)
+
+      showChart.value = false
+      nextTick(() => {
+        showChart.value = true
+      })
     }
   }
   finally {
@@ -134,12 +128,12 @@ onMounted(() => {
           </NRow>
         </div>
 
-        <BarChart
-          style="aspect-ratio: 3/2;"
-          v-show="chartData.labels.length"
+        <Bar
+          v-if="chartData.labels.length && showChart"
           ref="statisticsChart"
-          :config="chartConfig"
-          :chart-data="chartData"
+          style="aspect-ratio: 3/2;"
+          :options="chartOptions"
+          :data="chartData"
         />
       </div>
     </div>
