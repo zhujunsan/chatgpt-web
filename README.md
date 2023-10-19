@@ -4,7 +4,7 @@
   <a href="./README.md">中文</a> |
   <a href="./README.en.md">English</a>
 </div>
-</br>
+<br/>
 
 ## 说明
 > **此项目 Fork 自 [Chanzhaoyu/chatgpt-web](https://github.com/Chanzhaoyu/chatgpt-web), 新增了部分特色功能:**
@@ -68,10 +68,10 @@
 
 支持双模型，提供了两种非官方 `ChatGPT API` 方法
 
-| 方式                                          | 免费？ | 可靠性     | 质量 |
-| --------------------------------------------- | ------ | ---------- | ---- |
-| `ChatGPTAPI(gpt-3.5-turbo-0301)`                           | 否     | 可靠       | 相对较笨 |
-| `ChatGPTUnofficialProxyAPI(网页 accessToken)` | 是     | 相对不可靠 | 聪明 |
+| 方式                                          | 免费？ | 可靠性   | 质量   |
+|---------------------------------------------|-----|-------|------|
+| `ChatGPTAPI(gpt-3.5-turbo-0301)`            | 否   | 可靠    | 相对较笨 |
+| `ChatGPTUnofficialProxyAPI(网页 accessToken)` | 是   | 相对不可靠 | 聪明   |
 
 对比：
 1. `ChatGPTAPI` 使用 `gpt-3.5-turbo` 通过 `OpenAI` 官方 `API` 调用 `ChatGPT`
