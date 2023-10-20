@@ -601,7 +601,7 @@ onMounted(() => {
   }
 })
 
-watch(() => chatStore.active, (newVal, oldVal) => {
+watch(() => chatStore.active, () => {
   handleSyncChat()
 })
 
