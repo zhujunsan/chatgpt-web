@@ -1,6 +1,18 @@
 <script lang="ts" setup>
 import { h, onMounted, reactive, ref } from 'vue'
-import { NButton, NDataTable, NInput, NModal, NSelect, NSpace, NSwitch, NTag, useDialog, useMessage } from 'naive-ui'
+import type { DialogOptions } from 'naive-ui'
+import {
+  NButton,
+  NDataTable,
+  NInput,
+  NModal,
+  NSelect,
+  NSpace,
+  NSwitch,
+  NTag,
+  useDialog,
+  useMessage,
+} from 'naive-ui'
 import type { CHATMODEL } from './model'
 import { KeyConfig, Status, UserRole, apiModelOptions, userRoleOptions } from './model'
 import { fetchGetKeys, fetchUpdateApiKeyStatus, fetchUpsertApiKey } from '@/api'
@@ -21,7 +33,7 @@ const keyConfig = ref(new KeyConfig('', 'ChatGPTAPI', [], [], ''))
 const keys = ref([])
 const columns = [
   {
-    title: 'Key',
+    title: t('setting.key'),
     key: 'key',
     resizable: true,
     width: 200,
@@ -30,12 +42,12 @@ const columns = [
     ellipsis: true,
   },
   {
-    title: 'Api Model',
+    title: t('setting.apiModel'),
     key: 'keyModel',
     width: 190,
   },
   {
-    title: 'Chat Model',
+    title: t('setting.chatModels'),
     key: 'chatModels',
     width: 320,
     render(row: any) {
@@ -58,7 +70,7 @@ const columns = [
     },
   },
   {
-    title: 'User Roles',
+    title: t('setting.userRoles'),
     key: 'userRoles',
     width: 200,
     render(row: any) {
@@ -81,12 +93,12 @@ const columns = [
     },
   },
   {
-    title: 'Remark',
+    title: t('setting.remark'),
     key: 'remark',
-    width: 220,
+    width: 200,
   },
   {
-    title: 'Action',
+    title: t('setting.action'),
     key: '_id',
     width: 220,
     render(row: KeyConfig) {
@@ -123,11 +135,11 @@ const columns = [
 ]
 const pagination = reactive({
   page: 1,
-  pageSize: 100,
+  pageSize: 50,
   pageCount: 1,
   itemCount: 1,
   prefix({ itemCount }: { itemCount: number | undefined }) {
-    return `Total is ${itemCount}.`
+    return `${t('setting.total')} ${itemCount}`
   },
   showSizePicker: true,
   pageSizes: [100],
@@ -170,7 +182,7 @@ async function handleUpdateApiKeyStatus(id: string, status: Status) {
       ms.info('OK')
       await handleGetKeys(pagination.page)
     },
-  })
+  } as DialogOptions)
 }
 
 async function handleUpdateKeyConfig() {
@@ -211,7 +223,7 @@ onMounted(async () => {
       <NSpace vertical :size="12">
         <NSpace>
           <NButton @click="handleNewKey()">
-            New Key
+            {{ $t('setting.newKey') }}
           </NButton>
         </NSpace>
         <NDataTable

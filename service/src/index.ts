@@ -493,7 +493,7 @@ router.post('/chat-abort', [auth, limiter], async (req, res) => {
 
 router.post('/user-register', authLimiter, async (req, res) => {
   try {
-    const { username, password } = req.body as { username: string; password: string }
+    const { name, username, password } = req.body as { name: string; username: string; password: string }
     const config = await getCacheConfig()
     if (!config.siteConfig.registerEnabled) {
       res.send({ status: 'Fail', message: '注册账号功能未启用 | Register account is disabled!', data: null })
@@ -531,7 +531,7 @@ router.post('/user-register', authLimiter, async (req, res) => {
     }
     const newPassword = md5(password)
     const isRoot = username.toLowerCase() === process.env.ROOT_USER
-    await createUser(username, newPassword, isRoot ? [UserRole.Admin] : [UserRole.User])
+    await createUser(name, username, newPassword, isRoot ? [UserRole.Admin] : [UserRole.User])
 
     if (isRoot) {
       res.send({ status: 'Success', message: '注册成功 | Register success', data: null })
@@ -580,6 +580,7 @@ router.post('/session', async (req, res) => {
       const user = await getUserById(userId)
       userInfo = {
         name: user.name,
+        email: user.email,
         description: user.description,
         avatar: user.avatar,
         userId: user._id.toString(),
@@ -763,13 +764,20 @@ router.post('/user-status', rootAuth, async (req, res) => {
 
 router.post('/user-edit', rootAuth, async (req, res) => {
   try {
-    const { userId, email, password, roles } = req.body as { userId?: string; email: string; password: string; roles: UserRole[] }
+    const { userId, name, comment, email, password, roles } = req.body as {
+      userId?: string
+      name: string
+      comment: string
+      email: string
+      password: string
+      roles: UserRole[]
+    }
     if (userId) {
-      await updateUser(userId, roles, password)
+      await updateUser(userId, roles, name, comment, password)
     }
     else {
       const newPassword = md5(password)
-      const user = await createUser(email, newPassword, roles)
+      const user = await createUser(name, email, newPassword, roles, comment)
       await updateUserStatus(user._id.toString(), Status.Normal)
     }
     res.send({ status: 'Success', message: '更新成功 | Update successfully' })

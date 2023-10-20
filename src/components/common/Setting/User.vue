@@ -17,7 +17,23 @@ const userRef = ref(new UserInfo([UserRole.User]))
 const users = ref([])
 const columns = [
   {
-    title: 'Email',
+    title: t('setting.name'),
+    key: 'name',
+    resizable: true,
+    width: 100,
+    minWidth: 50,
+    maxWidth: 200,
+  },
+  {
+    title: t('setting.comment'),
+    key: 'comment',
+    resizable: true,
+    width: 100,
+    minWidth: 50,
+    maxWidth: 200,
+  },
+  {
+    title: t('setting.email'),
     key: 'email',
     resizable: true,
     width: 200,
@@ -25,17 +41,17 @@ const columns = [
     maxWidth: 200,
   },
   {
-    title: 'Register Time',
+    title: t('setting.registerTime'),
     key: 'createTime',
     width: 220,
   },
   {
-    title: 'Verify Time',
+    title: t('setting.verifyTime'),
     key: 'verifyTime',
     width: 220,
   },
   {
-    title: 'Roles',
+    title: t('setting.roles'),
     key: 'status',
     width: 200,
     render(row: any) {
@@ -58,15 +74,15 @@ const columns = [
     },
   },
   {
-    title: 'Status',
+    title: t('setting.status'),
     key: 'status',
-    width: 200,
+    width: 100,
     render(row: any) {
       return Status[row.status]
     },
   },
   {
-    title: 'Action',
+    title: t('setting.action'),
     key: '_id',
     width: 220,
     render(row: any) {
@@ -114,11 +130,11 @@ const columns = [
 ]
 const pagination = reactive ({
   page: 1,
-  pageSize: 25,
+  pageSize: 50,
   pageCount: 1,
   itemCount: 1,
   prefix({ itemCount }: { itemCount: number | undefined }) {
-    return `Total is ${itemCount}.`
+    return `${t('setting.total')} ${itemCount}`
   },
   showSizePicker: true,
   pageSizes: [25, 50, 100],
@@ -161,7 +177,7 @@ async function handleUpdateUserStatus(userId: string, status: Status) {
         ms.info('OK')
         await handleGetUsers(pagination.page)
       },
-    })
+    } as DialogOptions)
   }
   else {
     await fetchUpdateUserStatus(userId, status)
@@ -204,7 +220,7 @@ onMounted(async () => {
       <NSpace vertical :size="12">
         <NSpace>
           <NButton @click="handleNewUser()">
-            New User
+            {{ t('setting.newUser') }}
           </NButton>
         </NSpace>
         <NDataTable
@@ -228,11 +244,32 @@ onMounted(async () => {
     <div class="p-4 space-y-5 min-h-[200px]">
       <div class="space-y-6">
         <div class="flex items-center space-x-4">
+          <span class="flex-shrink-0 w-[100px]">{{ $t('setting.name') }}</span>
+          <div class="flex-1">
+            <NInput
+              v-model:value="userRef.name"
+              :placeholder="t('setting.name')"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <span class="flex-shrink-0 w-[100px]">{{ $t('setting.comment') }}</span>
+          <div class="flex-1">
+            <NInput
+              v-model:value="userRef.comment"
+              :placeholder="t('setting.comment')"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
           <span class="flex-shrink-0 w-[100px]">{{ $t('setting.email') }}</span>
           <div class="flex-1">
             <NInput
               v-model:value="userRef.email"
-              :disabled="userRef._id !== undefined" placeholder="email"
+              :disabled="userRef._id !== undefined"
+              :placeholder="t('setting.email')"
             />
           </div>
         </div>
@@ -243,10 +280,11 @@ onMounted(async () => {
             <NInput
               v-model:value="userRef.password"
               type="password"
-              placeholder="password"
+              :placeholder="t('setting.password')"
             />
           </div>
         </div>
+
         <div class="flex items-center space-x-4">
           <span class="flex-shrink-0 w-[100px]">{{ $t('setting.userRoles') }}</span>
           <div class="flex-1">
@@ -259,6 +297,7 @@ onMounted(async () => {
             />
           </div>
         </div>
+
         <div class="flex items-center space-x-4">
           <span class="flex-shrink-0 w-[100px]" />
           <NButton type="primary" :loading="handleSaving" @click="handleUpdateUser()">

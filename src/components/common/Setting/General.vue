@@ -25,6 +25,8 @@ const avatar = ref(userInfo.value.avatar ?? '')
 
 const name = ref(userInfo.value.name ?? '')
 
+const email = ref(userInfo.value.email ?? '')
+
 const description = ref(userInfo.value.description ?? '')
 
 const language = computed({
@@ -124,6 +126,12 @@ function handleImportButtonClick(): void {
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.name') }}</span>
         <div class="w-[200px]">
           <NInput v-model:value="name" placeholder="" />
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="flex-shrink-0 w-[100px]">{{ $t('setting.email') }}</span>
+        <div class="w-[200px]">
+          <NInput v-model:value="email" placeholder="" disabled />
         </div>
       </div>
       <div class="flex items-center space-x-4">

@@ -29,11 +29,12 @@ const authStore = useAuthStore()
 const ms = useMessage()
 
 const loading = ref(false)
+const name = ref('')
 const username = ref('')
 const password = ref('')
 const sign = ref('')
 
-const disabled = computed(() => !username.value.trim() || !password.value.trim() || loading.value)
+const disabled = computed(() => !name.value.trim() || !username.value.trim() || !password.value.trim() || loading.value)
 
 const activeTab = ref('login')
 
@@ -110,15 +111,15 @@ function handlePress(event: KeyboardEvent) {
 }
 
 async function handleLogin() {
-  const name = username.value.trim()
-  const pwd = password.value.trim()
+  const formUsername = username.value.trim()
+  const formPwd = password.value.trim()
 
-  if (!name || !pwd)
+  if (!formUsername || !formPwd)
     return
 
   try {
     loading.value = true
-    const result = await fetchLogin(name, pwd)
+    const result = await fetchLogin(formUsername, formPwd)
     await authStore.setToken(result.data.token)
     ms.success('success')
     window.location.reload()
@@ -133,18 +134,19 @@ async function handleLogin() {
 }
 
 async function handleRegister() {
-  const name = username.value.trim()
-  const pwd = password.value.trim()
-  const confirmPwd = confirmPassword.value.trim()
+  const formName = name.value.trim()
+  const formUsername = username.value.trim()
+  const formPwd = password.value.trim()
+  const formConfirmPwd = confirmPassword.value.trim()
 
-  if (!name || !pwd || !confirmPwd || pwd !== confirmPwd) {
+  if (!formName || !formUsername || !formPwd || !formConfirmPwd || formPwd !== formConfirmPwd) {
     ms.error('两次输入的密码不一致 | Passwords don\'t match')
     return
   }
 
   try {
     loading.value = true
-    const result = await fetchRegister(name, pwd)
+    const result = await fetchRegister(formName, formUsername, formPwd)
     ms.success(result.message as string)
   }
   catch (error: any) {
@@ -220,6 +222,7 @@ async function handleResetPassword() {
           </NTabPane>
 
           <NTabPane v-if="authStore.session && authStore.session.allowRegister" name="register" :tab="$t('common.register')">
+            <NInput v-model:value="name" type="text" :placeholder="$t('common.name')" class="mb-2" />
             <NInput v-model:value="username" type="text" :placeholder="$t('common.email')" class="mb-2" />
             <NInput v-model:value="password" type="password" :placeholder="$t('common.password')" class="mb-2" @input="handlePasswordInput" />
             <NInput

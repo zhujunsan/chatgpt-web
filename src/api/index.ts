@@ -102,10 +102,10 @@ export function fetchResetPassword<T = any>(username: string, password: string, 
   })
 }
 
-export function fetchRegister<T = any>(username: string, password: string) {
+export function fetchRegister<T = any>(name: string, username: string, password: string) {
   return post<T>({
     url: '/user-register',
-    data: { username, password },
+    data: { name, username, password },
   })
 }
 
@@ -140,7 +140,14 @@ export function fetchUpdateUserStatus<T = any>(userId: string, status: Status) {
 export function fetchUpdateUser<T = any>(userInfo: UserInfo) {
   return post<T>({
     url: '/user-edit',
-    data: { userId: userInfo._id, roles: userInfo.roles, email: userInfo.email, password: userInfo.password },
+    data: {
+      userId: userInfo._id,
+      roles: userInfo.roles,
+      name: userInfo.name,
+      comment: userInfo.comment,
+      email: userInfo.email,
+      password: userInfo.password,
+    },
   })
 }
 

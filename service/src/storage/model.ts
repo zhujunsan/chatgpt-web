@@ -26,6 +26,7 @@ export enum UserRole {
 export class UserInfo {
   _id: ObjectId
   name: string
+  comment: string
   email: string
   password: string
   status: Status
@@ -36,8 +37,9 @@ export class UserInfo {
   updateTime?: string
   config?: UserConfig
   roles?: UserRole[]
-  constructor(email: string, password: string) {
-    this.name = email
+  constructor(name: string, email: string, password: string, comment?: string) {
+    this.name = name
+    this.comment = comment
     this.email = email
     this.password = password
     this.status = Status.PreVerify

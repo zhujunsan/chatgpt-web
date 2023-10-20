@@ -82,7 +82,7 @@ watch(
         </div>
         <div class="p-4">
           <NButton block @click="show = true">
-            {{ $t('store.siderButton') }}
+            {{ $t('store.sideButton') }}
           </NButton>
         </div>
       </main>
