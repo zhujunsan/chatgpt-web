@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { h, onMounted, reactive, ref } from 'vue'
-import type { DialogOptions } from 'naive-ui'
 import {
   NButton,
   NDataTable,
@@ -182,7 +181,7 @@ async function handleUpdateApiKeyStatus(id: string, status: Status) {
       ms.info('OK')
       await handleGetKeys(pagination.page)
     },
-  } as DialogOptions)
+  })
 }
 
 async function handleUpdateKeyConfig() {

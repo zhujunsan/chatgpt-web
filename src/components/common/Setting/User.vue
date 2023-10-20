@@ -177,7 +177,7 @@ async function handleUpdateUserStatus(userId: string, status: Status) {
         ms.info('OK')
         await handleGetUsers(pagination.page)
       },
-    } as DialogOptions)
+    })
   }
   else {
     await fetchUpdateUserStatus(userId, status)
