@@ -34,7 +34,7 @@ const username = ref('')
 const password = ref('')
 const sign = ref('')
 
-const disabled = computed(() => !name.value.trim() || !username.value.trim() || !password.value.trim() || loading.value)
+const disabled = computed(() => !username.value.trim() || !password.value.trim() || loading.value)
 
 const activeTab = ref('login')
 
@@ -139,7 +139,17 @@ async function handleRegister() {
   const formPwd = password.value.trim()
   const formConfirmPwd = confirmPassword.value.trim()
 
-  if (!formName || !formUsername || !formPwd || !formConfirmPwd || formPwd !== formConfirmPwd) {
+  if (!formName) {
+    ms.error('未填写名称 | No username')
+    return
+  }
+
+  if (!formUsername) {
+    ms.error('未填写邮箱 | No email')
+    return
+  }
+
+  if (!formPwd || !formConfirmPwd || formPwd !== formConfirmPwd) {
     ms.error('两次输入的密码不一致 | Passwords don\'t match')
     return
   }
