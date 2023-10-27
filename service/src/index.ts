@@ -505,9 +505,9 @@ router.post('/user-register', authLimiter, async (req, res) => {
     }
     if (isNotEmptyString(config.siteConfig.registerMails)) {
       let allowSuffix = false
-      const emailSuffixs = config.siteConfig.registerMails.split(',')
-      for (let index = 0; index < emailSuffixs.length; index++) {
-        const element = emailSuffixs[index]
+      const emailSuffixes = config.siteConfig.registerMails.split(',')
+      for (let index = 0; index < emailSuffixes.length; index++) {
+        const element = emailSuffixes[index]
         allowSuffix = username.toLowerCase().endsWith(element)
         if (allowSuffix)
           break
@@ -518,7 +518,7 @@ router.post('/user-register', authLimiter, async (req, res) => {
       }
     }
 
-    const user = await getUser(username)
+    let user = await getUser(username)
     if (user != null) {
       if (user.status === Status.PreVerify) {
         await sendVerifyMail(username, await getUserVerifyUrl(username))
@@ -531,9 +531,12 @@ router.post('/user-register', authLimiter, async (req, res) => {
     }
     const newPassword = md5(password)
     const isRoot = username.toLowerCase() === process.env.ROOT_USER
-    await createUser(name, username, newPassword, isRoot ? [UserRole.Admin] : [UserRole.User])
+    user = await createUser(name, username, newPassword, isRoot ? [UserRole.Admin] : [UserRole.User])
+    if (config.siteConfig.registerEmailVerify === false) {
+      await updateUserStatus(user._id.toString(), Status.Normal)
+    }
 
-    if (isRoot) {
+    if (isRoot || config.siteConfig.registerEmailVerify === false) {
       res.send({ status: 'Success', message: '注册成功 | Register success', data: null })
     }
     else {

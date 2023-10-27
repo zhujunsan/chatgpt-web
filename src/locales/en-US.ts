@@ -113,6 +113,7 @@ export default {
     siteTitle: 'Title',
     siteDomain: 'Domain',
     registerEnabled: 'Register Enabled',
+    registerEmailVerify: 'Need Verify Email',
     registerReview: 'Register Review',
     registerMails: 'Register Mails',
     registerReviewTip: 'Only email addresses with these suffixes are allowed to register on this website.',

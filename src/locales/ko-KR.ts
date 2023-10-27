@@ -111,6 +111,7 @@ export default {
     siteTitle: '제목',
     siteDomain: '도메인',
     registerEnabled: '등록 활성화',
+    registerEmailVerify: '이메일 인증이 필요합니다',
     registerReview: '등록 리뷰',
     registerMails: '메일 등록',
     registerReviewTip: 'Only email addresses with these suffixes are allowed to register on this website.',

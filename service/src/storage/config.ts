@@ -69,6 +69,8 @@ export async function getOriginConfig() {
     }
     if (config.siteConfig.registerReview === undefined)
       config.siteConfig.registerReview = process.env.REGISTER_REVIEW === 'true'
+    if (config.siteConfig.registerEmailVerify === undefined)
+      config.siteConfig.registerEmailVerify = true
   }
   if (config.apiModel !== 'ChatGPTAPI' && config.apiModel !== 'ChatGPTUnofficialProxyAPI') {
     if (isNotEmptyString(config.accessToken))

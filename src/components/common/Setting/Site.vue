@@ -99,6 +99,16 @@ onMounted(() => {
           </div>
         </div>
         <div v-show="config && config.registerEnabled" class="flex items-center space-x-4">
+          <span class="flex-shrink-0 w-[100px]">{{ $t('setting.registerEmailVerify') }}</span>
+          <div class="flex-1">
+            <NSwitch
+              :round="false"
+              :value="config && config.registerEmailVerify"
+              @update:value="(val) => { if (config) config.registerEmailVerify = val }"
+            />
+          </div>
+        </div>
+        <div v-show="config && config.registerEnabled" class="flex items-center space-x-4">
           <span class="flex-shrink-0 w-[100px]">{{ $t('setting.registerReview') }}</span>
           <div class="flex-1">
             <NSwitch

@@ -195,6 +195,7 @@ export class SiteConfig {
     public loginSalt?: string,
     public registerEnabled?: boolean,
     public registerReview?: boolean,
+    public registerEmailVerify?: boolean,
     public registerMails?: string,
     public siteDomain?: string,
   ) { }

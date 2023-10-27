@@ -113,6 +113,7 @@ export default {
     siteTitle: '网站标题',
     siteDomain: '域名 不含/',
     registerEnabled: '新用户',
+    registerEmailVerify: '需驗證郵箱',
     registerReview: '新用户审核',
     registerMails: '后缀',
     registerReviewTip: '仅允许这些邮箱的后缀注册本网站',
