@@ -37,6 +37,8 @@ export class UserInfo {
   updateTime?: string
   config?: UserConfig
   roles?: UserRole[]
+  remark?: string
+  secretKey?: string // 2fa
   constructor(name: string, email: string, password: string, comment?: string) {
     this.name = name
     this.comment = comment
