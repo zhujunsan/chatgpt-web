@@ -44,7 +44,7 @@ export default defineConfig((env) => {
       },
     },
     build: {
-      reportCompressedSize: false,
+      reportCompressedSize: true,
       sourcemap: false,
       commonjsOptions: {
         ignoreTryCatch: false,
