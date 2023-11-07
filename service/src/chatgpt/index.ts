@@ -4,7 +4,7 @@ import type { ChatGPTAPIOptions, ChatMessage, SendMessageOptions } from 'chatgpt
 import { ChatGPTAPI, ChatGPTUnofficialProxyAPI } from 'chatgpt'
 import { SocksProxyAgent } from 'socks-proxy-agent'
 import httpsProxyAgent from 'https-proxy-agent'
-import fetch from 'node-fetch'
+import type { RequestInfo, RequestInit } from 'node-fetch'
 import jwt_decode from 'jwt-decode'
 import type { AuditConfig, CHATMODEL, KeyConfig, UserInfo } from '../storage/model'
 import { Status } from '../storage/model'
@@ -19,6 +19,9 @@ import { getChatByMessageId, updateRoomAccountId, updateRoomChatModel } from '..
 import type { RequestOptions } from './types'
 
 const { HttpsProxyAgent } = httpsProxyAgent
+
+const fetch = (url: RequestInfo, init?: RequestInit) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(url, init))
 
 dotenv.config()
 
