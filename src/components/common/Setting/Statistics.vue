@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { nextTick, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import { NCol, NDatePicker, NIcon, NNumberAnimation, NRow, NSpin, NStatistic } from 'naive-ui'
 import type { ChartData, ChartOptions } from 'chart.js'
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js'
@@ -11,7 +11,7 @@ import { SvgIcon } from '@/components/common'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-const statisticsChart = ref(null)
+const statisticsChart = ref<typeof Bar | null>(null)
 const aspectRatio = ref(1.5)
 
 const chartData: ChartData<'bar'> = reactive({
@@ -93,9 +93,7 @@ function reRenderChart() {
   if (statisticsChart.value) {
     chartOptions.aspectRatio = window.innerWidth / window.innerHeight * 1.5
     statisticsChart.value.chart.options = chartOptions
-
     statisticsChart.value.chart.data = chartData
-
     statisticsChart.value.chart.update()
   }
 }
@@ -104,6 +102,7 @@ onMounted(() => {
   fetchStatistics()
   window.addEventListener('resize', reRenderChart)
 })
+
 onUnmounted(() => {
   window.removeEventListener('resize', reRenderChart)
 })
