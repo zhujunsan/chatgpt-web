@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { nextTick, onMounted, reactive, ref } from 'vue'
+import { nextTick, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { NCol, NDatePicker, NIcon, NNumberAnimation, NRow, NSpin, NStatistic } from 'naive-ui'
 import type { ChartData, ChartOptions } from 'chart.js'
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js'
@@ -10,6 +10,9 @@ import { fetchUserStatistics } from '@/api'
 import { SvgIcon } from '@/components/common'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+
+const showChart = ref(true)
+const aspectRatio = ref(window.innerWidth / window.innerHeight * 1.5)
 
 const chartData: ChartData<'bar'> = reactive({
   labels: [],
@@ -32,6 +35,7 @@ const chartData: ChartData<'bar'> = reactive({
 })
 const chartOptions: ChartOptions<'bar'> = {
   responsive: true,
+  aspectRatio: aspectRatio.value,
 }
 const summary = ref({
   promptTokens: 0,
@@ -60,8 +64,6 @@ rangeShortcuts[t('setting.statisticsPeriodLast30Days')] = [
   dayjs().endOf('day').valueOf(),
 ]
 
-const showChart = ref(true)
-
 async function fetchStatistics() {
   try {
     loading.value = true
@@ -79,11 +81,7 @@ async function fetchStatistics() {
       chartData.datasets[0].data = data.chartData.map((item: any) => item.promptTokens)
       chartData.datasets[1].data = data.chartData.map((item: any) => item.completionTokens)
 
-      // todo: don't know why data change won't trigger chart re-render, dirty hack
-      showChart.value = false
-      nextTick(() => {
-        showChart.value = true
-      })
+      reRenderChart()
     }
   }
   finally {
@@ -91,8 +89,22 @@ async function fetchStatistics() {
   }
 }
 
+function reRenderChart() {
+  aspectRatio.value = window.innerWidth / window.innerHeight * 1.5
+  chartOptions.aspectRatio = aspectRatio.value
+  // todo: don't know why data change won't trigger chart re-render, dirty hack
+  showChart.value = false
+  nextTick(() => {
+    showChart.value = true
+  })
+}
+
 onMounted(() => {
   fetchStatistics()
+  window.addEventListener('resize', reRenderChart)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', reRenderChart)
 })
 </script>
 
@@ -150,7 +162,6 @@ onMounted(() => {
         <Bar
           v-if="showChart && chartData.labels?.length"
           ref="statisticsChart"
-          style="aspect-ratio: 3/2;"
           :options="chartOptions"
           :data="chartData"
         />
