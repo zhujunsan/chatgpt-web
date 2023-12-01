@@ -12,7 +12,6 @@ import { SvgIcon } from '@/components/common'
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 const statisticsChart = ref<typeof Bar | null>(null)
-const aspectRatio = ref(1.5)
 
 const chartData: ChartData<'bar'> = reactive({
   labels: [],
@@ -35,7 +34,7 @@ const chartData: ChartData<'bar'> = reactive({
 })
 const chartOptions: ChartOptions<'bar'> = {
   responsive: true,
-  aspectRatio: aspectRatio.value,
+  aspectRatio: window.innerWidth / window.innerHeight * 1.5,
 }
 const summary = ref({
   promptTokens: 0,
