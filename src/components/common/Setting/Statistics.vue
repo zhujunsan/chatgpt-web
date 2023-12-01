@@ -11,8 +11,8 @@ import { SvgIcon } from '@/components/common'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-const showChart = ref(true)
-const aspectRatio = ref(window.innerWidth / window.innerHeight * 1.5)
+const statisticsChart = ref(null)
+const aspectRatio = ref(1.5)
 
 const chartData: ChartData<'bar'> = reactive({
   labels: [],
@@ -90,13 +90,14 @@ async function fetchStatistics() {
 }
 
 function reRenderChart() {
-  aspectRatio.value = window.innerWidth / window.innerHeight * 1.5
-  chartOptions.aspectRatio = aspectRatio.value
-  // todo: don't know why data change won't trigger chart re-render, dirty hack
-  showChart.value = false
-  nextTick(() => {
-    showChart.value = true
-  })
+  if (statisticsChart.value) {
+    chartOptions.aspectRatio = window.innerWidth / window.innerHeight * 1.5
+    statisticsChart.value.chart.options = chartOptions
+
+    statisticsChart.value.chart.data = chartData
+
+    statisticsChart.value.chart.update()
+  }
 }
 
 onMounted(() => {
@@ -160,7 +161,7 @@ onUnmounted(() => {
         </div>
 
         <Bar
-          v-if="showChart && chartData.labels?.length"
+          v-if="chartData.labels?.length"
           ref="statisticsChart"
           :options="chartOptions"
           :data="chartData"
