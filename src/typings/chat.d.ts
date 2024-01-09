@@ -1,5 +1,5 @@
 declare namespace Chat {
-  import { CHATMODEL } from "@/components/common/Setting/model"
+  import { CHATMODEL } from '@/components/common/Setting/model'
 
   interface Chat {
     uuid?: number
