@@ -126,6 +126,7 @@ export class UserInfo {
   name?: string
   email?: string
   comment?: string
+  remark?: string
   password?: string
   roles: UserRole[]
   constructor(roles: UserRole[]) {
