@@ -288,6 +288,7 @@ async function onRegenerate(index: number) {
 
   try {
     let lastText = ''
+    let lastReasoningText = ''
     const fetchChatAPIOnce = async () => {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         roomId: +uuid,
@@ -321,6 +322,7 @@ async function onRegenerate(index: number) {
               {
                 dateTime: new Date().toLocaleString(),
                 text: lastText + (data.text ?? ''),
+                reasoningText: lastReasoningText + (data.reasoningText ?? ''),
                 inversion: false,
                 responseCount,
                 error: false,
@@ -334,6 +336,7 @@ async function onRegenerate(index: number) {
             if (openLongReply && data.detail && data.detail.choices.length > 0 && data.detail.choices[0].finish_reason === 'length') {
               options.parentMessageId = data.id
               lastText = data.text
+              lastReasoningText = data.reasoningText
               message = ''
               return fetchChatAPIOnce()
             }
@@ -686,6 +689,7 @@ onUnmounted(() => {
                   :current-nav-index="currentNavIndexRef"
                   :date-time="item.dateTime"
                   :text="item.text"
+                  :reasoning-text="item.reasoningText"
                   :images="item.images"
                   :inversion="item.inversion"
                   :response-count="item.responseCount"

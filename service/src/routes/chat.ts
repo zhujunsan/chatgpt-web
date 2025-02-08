@@ -85,6 +85,7 @@ router.get('/chat-history', auth, async (req, res) => {
           uuid: c.uuid,
           dateTime: new Date(c.dateTime).toLocaleString(),
           text: c.response,
+          reasoningText: c.reasoningText,
           inversion: false,
           error: false,
           loading: false,
@@ -270,6 +271,7 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
           id: chat.id,
           conversationId: chat.conversationId,
           text: chat.text,
+          reasoningText: chat.reasoningText || undefined,
           detail: {
             choices: [
               {
@@ -330,7 +332,8 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
           result.data.conversationId,
           model,
           result.data.detail?.usage as UsageResponse,
-          previousResponse as [])
+          previousResponse as [],
+          result.data.reasoningText)
       }
       else {
         await updateChat(message._id as unknown as string,
@@ -338,7 +341,9 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
           result.data.id,
           result.data.conversationId,
           model,
-          result.data.detail?.usage as UsageResponse)
+          result.data.detail?.usage as UsageResponse,
+          null,
+          result.data.reasoningText)
       }
 
       if (result.data.detail?.usage) {

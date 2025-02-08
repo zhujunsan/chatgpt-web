@@ -22,6 +22,7 @@ interface Props {
   dateTime?: string
   model?: string
   text?: string
+  reasoningText?: string
   images?: string[]
   isRecord?: boolean
   inversion?: boolean
@@ -232,6 +233,7 @@ function isEventTargetValid(event: any) {
           :inversion="inversion"
           :error="error"
           :text="text"
+          :reasoning-text="reasoningText"
           :images="images"
           :loading="loading"
           :as-raw-text="asRawText"

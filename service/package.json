@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "axios": "^1.6.7",
-    "chatgpt": "npm:@chatgptweb/chatgpt-api@5.3.0",
+    "chatgpt": "npm:@zhujunsan/chatgpt-api@5.3.1",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "express": "^4.19.2",

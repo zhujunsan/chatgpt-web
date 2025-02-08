@@ -124,6 +124,7 @@ export class ChatInfo {
   prompt: string
   images?: string[]
   response?: string
+  reasoningText?: string
   status: Status = Status.Normal
   options: ChatOptions
   previousResponse?: previousResponse[]

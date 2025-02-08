@@ -41,20 +41,10 @@ const userPromptCol = client.db(dbName).collection<UserPrompt>('user_prompt')
 // }
 const redeemCol = client.db(dbName).collection<GiftCard>('giftcards')
 
-/**
- * 插入聊天信息
- * @param uuid
- * @param text 内容 prompt or response
- * @param roomId
- * @param options
- * @returns model
- */
-
 // 获取、比对兑换券号码
 export async function getAmtByCardNo(redeemCardNo: string) {
-  // const chatInfo = new ChatInfo(roomId, uuid, text, options)
-  const amt_isused = await redeemCol.findOne({ cardno: redeemCardNo.trim() }) as GiftCard
-  return amt_isused
+  const amtIssued = await redeemCol.findOne({ cardno: redeemCardNo.trim() }) as GiftCard
+  return amtIssued
 }
 // 兑换后更新兑换券信息
 export async function updateGiftCard(redeemCardNo: string, userId: string) {
@@ -79,6 +69,16 @@ export async function updateGiftCards(data: GiftCard[], overRide = true) {
   return insertResult
 }
 
+/**
+ * 插入聊天信息
+ * @param uuid
+ * @param text 内容 prompt or response
+ * @param images
+ * @param roomId
+ * @param model
+ * @param options
+ * @returns model
+ */
 export async function insertChat(uuid: number, text: string, images: string[], roomId: number, model: string, options?: ChatOptions) {
   const chatInfo = new ChatInfo(roomId, uuid, text, images, model, options)
   await chatCol.insertOne(chatInfo)
@@ -93,11 +93,12 @@ export async function getChatByMessageId(messageId: string) {
   return await chatCol.findOne({ 'options.messageId': messageId })
 }
 
-export async function updateChat(chatId: string, response: string, messageId: string, conversationId: string, model: string, usage: UsageResponse, previousResponse?: []) {
+export async function updateChat(chatId: string, response: string, messageId: string, conversationId: string, model: string, usage: UsageResponse, previousResponse?: [], reasoningText?: string) {
   const query = { _id: new ObjectId(chatId) }
   const update = {
     $set: {
       'response': response,
+      'reasoningText': reasoningText,
       'model': model || '',
       'options.messageId': messageId,
       'options.conversationId': conversationId,

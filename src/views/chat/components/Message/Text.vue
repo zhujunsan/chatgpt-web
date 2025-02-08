@@ -12,6 +12,7 @@ interface Props {
   inversion?: boolean
   error?: boolean
   text?: string
+  reasoningText?: string
   images?: string[]
   loading?: boolean
   asRawText?: boolean
@@ -54,6 +55,13 @@ const wrapClass = computed(() => {
 
 const text = computed(() => {
   const value = props.text ?? ''
+  if (!props.asRawText)
+    return mdi.render(value)
+  return value
+})
+
+const reasoningText = computed(() => {
+  const value = props.reasoningText ?? ''
   if (!props.asRawText)
     return mdi.render(value)
   return value
@@ -107,9 +115,33 @@ onUnmounted(() => {
 <template>
   <div class="text-black" :class="wrapClass">
     <div ref="textRef" class="leading-relaxed break-words">
-      <div v-if="!inversion" class="flex items-end">
-        <div v-if="!asRawText" class="w-full markdown-body" :class="{ 'markdown-body-generate': loading }" v-html="text" />
-        <div v-else class="w-full whitespace-pre-wrap" v-text="text" />
+      <div v-if="!inversion" class="flex flex-col items-end">
+        <template v-if="!asRawText">
+          <template v-if="reasoningText">
+            <div class="w-full markdown-body" :class="{ 'markdown-body-generate': loading }">
+              &lt;think&gt;
+            </div>
+            <div class="w-full markdown-body" :class="{ 'markdown-body-generate': loading }" v-html="reasoningText" />
+            <div class="w-full markdown-body" :class="{ 'markdown-body-generate': loading }">
+              &lt;/think&gt;
+            </div>
+            <br>
+          </template>
+          <div class="w-full markdown-body" :class="{ 'markdown-body-generate': loading }" v-html="text" />
+        </template>
+        <template v-else>
+          <template v-if="reasoningText">
+            <div class="w-full whitespace-pre-wrap">
+              &lt;think&gt;
+            </div>
+            <div class="w-full whitespace-pre-wrap" v-text="reasoningText" />
+            <div class="w-full whitespace-pre-wrap">
+              &lt;/think&gt;
+            </div>
+            <br>
+          </template>
+          <div class="w-full whitespace-pre-wrap" v-text="text" />
+        </template>
       </div>
       <div v-else class="whitespace-pre-wrap" v-text="text" />
       <img v-for="(v, i) of images" :key="i" :src="`/uploads/${v}`" alt="" width="160px">
