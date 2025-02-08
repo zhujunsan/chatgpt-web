@@ -141,6 +141,7 @@ async function onConversation() {
 
   try {
     let lastText = ''
+    let lastReasoningText = ''
     const fetchChatAPIOnce = async () => {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         roomId: +uuid,
@@ -174,6 +175,7 @@ async function onConversation() {
               {
                 dateTime: new Date().toLocaleString(),
                 text: lastText + (data.text ?? ''),
+                reasoningText: lastReasoningText + (data.reasoningText ?? ''),
                 inversion: false,
                 error: false,
                 loading: true,
@@ -186,6 +188,7 @@ async function onConversation() {
             if (openLongReply && data.detail && data.detail.choices.length > 0 && data.detail.choices[0].finish_reason === 'length') {
               options.parentMessageId = data.id
               lastText = data.text
+              lastReasoningText = data.reasoningText
               message = ''
               return fetchChatAPIOnce()
             }
