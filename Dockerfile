@@ -4,8 +4,8 @@ FROM node:20-alpine AS frontend
 ARG GIT_COMMIT_HASH=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ARG RELEASE_VERSION=v0.0.0
 
-ENV VITE_GIT_COMMIT_HASH $GIT_COMMIT_HASH
-ENV VITE_RELEASE_VERSION $RELEASE_VERSION
+ENV VITE_GIT_COMMIT_HASH=$GIT_COMMIT_HASH
+ENV VITE_RELEASE_VERSION=$RELEASE_VERSION
 
 RUN npm install pnpm -g
 
@@ -22,7 +22,7 @@ COPY . /app
 RUN pnpm run build
 
 # build backend
-FROM node:20-alpine as backend
+FROM node:20-alpine AS backend
 
 RUN npm install pnpm -g
 
