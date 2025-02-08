@@ -262,7 +262,7 @@ async function setupProxy(options: ChatGPTAPIOptions | ChatGPTUnofficialProxyAPI
 
     })
     options.fetch = (url, options) => {
-      return fetch(url, { agent, ...options })
+      return fetch(url, { agent, ...options }) as unknown as Promise<Response>
     }
   }
   else {
@@ -271,7 +271,7 @@ async function setupProxy(options: ChatGPTAPIOptions | ChatGPTUnofficialProxyAPI
       if (httpsProxy) {
         const agent = new HttpsProxyAgent(httpsProxy)
         options.fetch = (url, options) => {
-          return fetch(url, { agent, ...options })
+          return fetch(url, { agent, ...options }) as unknown as Promise<Response>
         }
       }
     }
